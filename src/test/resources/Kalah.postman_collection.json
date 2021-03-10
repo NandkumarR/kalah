@@ -1,0 +1,96 @@
+{
+	"info": {
+		"_postman_id": "56034c5f-ccdc-4bcc-a01c-e54000f874ee",
+		"name": "Kalah",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Game On",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4bc0fbb7-ab26-4925-8bef-da831fec36d8",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"gameId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/games",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"games"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make a move",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/games/{{gameId}}/pits/3",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"games",
+						"{{gameId}}",
+						"pits",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Game",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/games/{{gameId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"games",
+						"{{gameId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
