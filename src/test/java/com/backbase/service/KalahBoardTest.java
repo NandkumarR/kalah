@@ -30,7 +30,7 @@ import java.util.HashMap;
  * Integration tests that test all validations and a board game play. Integration runs with a random port assigned and NoSQL MongoDB.
  */
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = GameOnApplication.class,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,properties = { "application.kalah.initialize.stones=2" })
+@SpringBootTest(classes = GameOnApplication.class,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,properties = { "application.kalah.initialize.stones=6" })
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class KalahBoardTest {
@@ -60,6 +60,35 @@ public class KalahBoardTest {
             "\"12\":\"10\",\n" +
             "\"13\":\"5\"\n" +
             "}";
+
+    private static final String playingSchema1="{\n" +
+            "\"1\":\"1\",\n" +
+            "\"2\":\"2\",\n" +
+            "\"3\":\"8\",\n" +
+            "\"4\":\"1\",\n" +
+            "\"5\":\"9\",\n" +
+            "\"6\":\"3\",\n" +
+            "\"7\":\"12\",\n" +
+            "\"8\":\"13\",\n" +
+            "\"9\":\"4\",\n" +
+            "\"10\":\"13\",\n" +
+            "\"11\":\"12\",\n" +
+            "\"12\":\"3\",\n" +
+            "\"13\":\"9\",\n" +
+            "\"14\":\"5\",\n" +
+            "\"15\":\"13\",\n" +
+            "\"16\":\"12\",\n" +
+            "\"17\":\"6\",\n" +
+            "\"18\":\"13\",\n" +
+            "\"19\":\"8\",\n" +
+            "\"20\":\"4\",\n" +
+            "\"21\":\"10\",\n" +
+            "\"22\":\"11\",\n" +
+            "\"23\":\"12\",\n" +
+            "\"24\":\"3\",\n" +
+            "\"25\":\"13\"\n" +
+            "}";
+    private static final String WINNER_IS_1="PLAYER1";
     // Winner attached to above playing schema.
     private static final String WINNER_IS="PLAYER2";
 
@@ -80,7 +109,7 @@ public class KalahBoardTest {
     @BeforeAll
     public void initialsetUpBeforeIntegrationPlay() throws JsonProcessingException{
         gameIdForIntegrationPlay=createNewGameForIntegrationTest();
-        schemaMap= new ObjectMapper().readValue(playingSchema, HashMap.class);
+        schemaMap= new ObjectMapper().readValue(playingSchema1, HashMap.class);
     }
 
     /**
@@ -127,7 +156,7 @@ public class KalahBoardTest {
             responseEntity =  testRestTemplate.exchange(createURLWithPort(makeInValidMove), HttpMethod.PUT, entity,Game.class);
             Assert.isTrue(responseEntity.getStatusCode()==HttpStatus.OK,"Invalid status code");
         }
-        Assert.isTrue(responseEntity.getBody().getWinnerPlayer().toString().equals(WINNER_IS),"Game gone wrong");
+        Assert.isTrue(responseEntity.getBody().getWinnerPlayer().toString().equals(WINNER_IS_1),"Game gone wrong");
     }
 
     /**

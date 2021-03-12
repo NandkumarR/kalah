@@ -59,10 +59,6 @@ public class Game implements Serializable {
     }
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getStatus(){
-        //During game initialization , status field is to be ignored in the response.
-        if (this.nextPlayer==Player.ANY){
-            return null;
-        }
         return currentGameStats.stream()
                                .collect(Collectors.toMap(e->currentGameStats.indexOf(e)+1,e->e.getEntityCount()))
                                .toString();

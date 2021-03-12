@@ -1,0 +1,118 @@
+<script type="text/javascript" language="javascript">
+  var gameId='';
+    function mapJsonTable(responseObject) {
+        var jsonObject = JSON.parse(responseObject);
+        gameId=jsonObject.id;
+        var winner=jsonObject.winnerPlayer;
+
+        var tableMap=jsonObject.status;
+
+        var res=tableMap.replace("{","").replace("}","").split(",");
+        for (var i=0;i<res.length;i++){
+          var keyValue=res[i].split("=");
+          document.getElementById(keyValue[0].trim()).innerHTML=keyValue[1].trim();
+        }
+        if (winner){
+            alert("We have a winner -> "|| winner);
+        }
+    }
+    function startGame()
+    {
+        var apiUrl = 'http://localhost:8080/games';
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                mapJsonTable(this.responseText);
+            }
+        };
+        xhttp.open("POST", apiUrl, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+        document.getElementById("playboard").hidden=false;
+        document.getElementById("startGame").hidden=true;
+        document.getElementById("makeMoveLabel").hidden=false;
+        document.getElementById("makeMove").hidden=false;
+        document.getElementById("makeMoveoptions").hidden=false;
+    }
+    function makeMove() {
+        var apiUrl = 'http://localhost:8080/games/{{gameId}}/pits/{{pitId}}';
+        var move=document.getElementById("makeMoveoptions");
+        var pitId=move.options[move.selectedIndex].text
+        apiUrl=apiUrl.replace("{{gameId}}",gameId).replace("{{pitId}}",pitId);
+        var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                mapJsonTable(this.responseText);
+            }else if(this.readyState == 4 && this.status == 400){
+                console.log("Error", this.responseText);
+                alert(this.responseText);
+            }
+        };
+        xhttp.open("PUT", apiUrl, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+
+    }
+</script>
+<html>
+<h1>Kalah</h1>
+<body id='bod'><button id="startGame" type="submit" onclick="javascript:startGame()">Start Game</button>
+<label id="makeMoveLabel" hidden=true>Make a Move:</label>
+<select hidden=true id="makeMoveoptions" name="options">
+  <option value="select">-Select-</option>
+  <option value="sel1">1</option>
+  <option value="sel2">2</option>
+  <option value="sel3">3</option>
+  <option value="sel4">4</option>
+  <option value="sel5">5</option>
+  <option value="sel6">6</option>
+  <option value="sel8">8</option>
+  <option value="sel9">9</option>
+  <option value="sel10">10</option>
+  <option value="sel11">11</option>
+  <option value="sel12">12</option>
+  <option value="sel13">13</option>
+</select>
+<button id="makeMove" hidden=true type="submit" onclick="javascript:makeMove()">Play</button>
+
+<table id="playboard" hidden=true style="height: 200px; width: 500px; margin-left: auto; margin-right: auto;" border="1">
+  <tbody>
+  <tr style="height: 10px;">
+    <td id="14" style="width: 118px; height: 29.8438px;" rowspan="4">0</td>
+    <td style="width: 152px; height: 10px;background-color: #99aaff;">13</td>
+    <td style="width: 152px; height: 10px;background-color: #99aaff;">12</td>
+    <td style="width: 152px; height: 10px;background-color: #99aaff;">11</td>
+    <td style="width: 152px; height: 10px;background-color: #99aaff;">10</td>
+    <td style="width: 152px; height: 10px;background-color: #99aaff;">9</td>
+    <td style="width: 152px; height: 10px;background-color: #99aaff;">8</td>
+    <td id="7" style="width: 118px; height: 29.8438px;" rowspan="4">0</td>
+  </tr>
+  <tr id="player2" style="height: 19.8438px;">
+    <td id="13" style="width: 152px; height: 19.8438px;">0</td>
+    <td id="12" style="width: 152px; height: 19.8438px;">0</td>
+    <td id="11" style="width: 152px; height: 19.8438px;">0</td>
+    <td id="10" style="width: 152px; height: 19.8438px;">0</td>
+    <td id="9" style="width: 152px; height: 19.8438px;">0</td>
+    <td id="8" style="width: 152px; height: 19.8438px;">0</td>
+  </tr>
+  <tr id="player1" style="height: 19.8438px;">
+    <td id="1" style="width: 152px; height: 18px;">0</td>
+    <td id="2" style="width: 152px; height: 18px;">0</td>
+    <td id="3" style="width: 152px; height: 18px;">0</td>
+    <td id="4" style="width: 152px; height: 18px;">0</td>
+    <td id="5" style="width: 152px; height: 18px;">0</td>
+    <td id="6" style="width: 152px; height: 18px;">0</td>
+  </tr>
+  <tr style="height: 18px;">
+    <td style="width: 152px; height: 10px;background-color: #99aaff;" >1</td>
+    <td style="width: 152px; height: 10px;background-color: #99aaff;">2</td>
+    <td style="width: 152px; height: 10px;background-color: #99aaff;">3</td>
+    <td style="width: 152px; height: 10px;background-color: #99aaff;">4</td>
+    <td style="width: 152px; height: 10px;background-color: #99aaff;">5</td>
+    <td style="width: 152px; height: 10px;background-color: #99aaff;">6</td>
+  </tr>
+  </tbody>
+</table>
+
+</div></body>
+</html>
