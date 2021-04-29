@@ -144,7 +144,7 @@ public class KalahBoard {
      */
     private Integer isMoveValid(Entity chosenEntity,Player currentPlayer){
         if(chosenEntity.getOwnerPlayer()!=currentPlayer){
-            throw new KalahValidationException("Current Player doesn't own the pit : "+currentPlayer);
+            throw new KalahValidationException("Current Player doesn't own the pit.Owned by : "+currentPlayer);
         }
         if(chosenEntity.getEntityType()!=EntityType.PIT){
             throw new KalahValidationException("Move not allowed from Kalah : "+currentPlayer);

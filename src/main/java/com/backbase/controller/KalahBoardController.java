@@ -61,4 +61,5 @@ public class KalahBoardController {
     public void cleanUpKalahBoard(@PathVariable("gameId") String gameId){
         kalahBoard.cleanUpKalahBoard(gameId);
     }
+
 }

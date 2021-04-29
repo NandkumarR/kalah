@@ -43,7 +43,7 @@ public class Game implements Serializable {
         this.winnerPlayer=null;
     }
 
-    @JsonIgnore
+
     public Player getNextPlayer(){
         return this.nextPlayer;
     }
